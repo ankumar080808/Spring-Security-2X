@@ -1,0 +1,46 @@
+ public <U> Optional<U> map(Function<? super T, ? extends U> mapper) {
+        Objects.requireNonNull(mapper);
+        if (isEmpty()) {
+            return empty();
+        } else {
+            return Optional.ofNullable(mapper.apply(value));
+        }
+    }
+Q1) Explain the workflow of above code in respect of this user.map(GroupUserDetails::new)
+here GroupUserDetails is class which implements UserDetails interface
+
+Answer:
+-----------
+user: This is an Optional<User> retrieved from the userRepo.findByUserName(username) operation. The Optional type is a container that may or may not contain a value.
+
+map(GroupUserDetails::new): This is invoking the map method on the Optional<User> instance. The map method takes a Function as an argument, and in this case, it's the constructor reference GroupUserDetails::new. The map method applies the provided function (GroupUserDetails::new) to the value inside the Optional if it is present.
+
+Inside the map method:
+
+Objects.requireNonNull(mapper): Ensures that the provided mapper function is not null.
+isEmpty(): Checks if the Optional is empty (i.e., does not contain a value).
+If the Optional is empty, it returns an empty Optional.
+If the Optional is not empty, it applies the mapper function to the value inside the Optional using mapper.apply(value).
+Optional.ofNullable(...): Wraps the result of applying the mapper function in another Optional. If the result is null, it returns an empty Optional; otherwise, it wraps the result in a non-empty Optional.
+In the context of user.map(GroupUserDetails::new), the GroupUserDetails::new constructor reference is used as the mapper function. It takes a User object and creates a new instance of GroupUserDetails using that User object.
+
+So, if the user Optional is not empty (i.e., a User object is present), the map method will apply the GroupUserDetails::new constructor to create a GroupUserDetails object, and the result will be wrapped in an Optional<GroupUserDetails>.
+
+ Q2) private final T value;
+how this instance variable is getting initialised in my above given scenario
+
+Answer2)
+
+The value instance variable in your scenario is likely being initialized when the Optional is created. The Optional class in Java typically has two main static methods for creating instances:
+
+Optional.of(T value): Creates an Optional containing the specified non-null value.
+
+Optional.empty(): Creates an empty Optional.
+
+In your code snippet, you have the line:
+Optional<User> user = userRepo.findByUserName(username);
+
+Here, userRepo.findByUserName(username) is likely returning an Optional<User>. The value of the Optional is set to the result of this operation. If a User object is found in the repository, it becomes the value inside the Optional. If no user is found, the Optional is empty.
+
+So, the value instance variable is implicitly set during the creation of the Optional when calling Optional.of(...), Optional.ofNullable(...), or similar methods. The Optional is designed to encapsulate the concept of an optional value or the absence of a value in a more expressive way than using null.
+

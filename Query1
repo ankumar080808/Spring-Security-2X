@@ -1,0 +1,16 @@
+
+if i want the principal.getname to return Id or address then what to do?
+
+
+
+
+Access User Details Directly
+Depending on how you've set up your authentication provider, you might be able to access additional details directly without modifying the Principal interface. For example, if you are using Spring Security with UserDetails, you can cast the principal to UserDetails and access custom fields directly.
+
+java
+Copy code
+CustomUserDetails userDetails = (CustomUserDetails) principal;
+Long userId = userDetails.getUserId();
+String address = userDetails.getAddress();
+Choose the option that best fits your application architecture and requirements. Remember to adapt the solution based on the specific technologies and frameworks you are using.
+

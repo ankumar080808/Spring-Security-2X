@@ -1,0 +1,36 @@
+
+public class AuthenticationManagerBuilder
+		extends AbstractConfiguredSecurityBuilder<AuthenticationManager, AuthenticationManagerBuilder>
+		implements ProviderManagerBuilder<AuthenticationManagerBuilder> 
+		
+		private <C extends UserDetailsAwareConfigurer<AuthenticationManagerBuilder, ? extends UserDetailsService>> C apply(
+			C configurer) throws Exception {
+		this.defaultUserDetailsService = configurer.getUserDetailsService();
+		return super.apply(configurer);
+	    }
+	
+	     public <T extends UserDetailsService> DaoAuthenticationConfigurer<AuthenticationManagerBuilder, T> userDetailsService(
+			T userDetailsService) throws Exception {
+		this.defaultUserDetailsService = userDetailsService;
+		return apply(new DaoAuthenticationConfigurer<>(userDetailsService));
+	    }
+		
+		public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBuilder<O>>
+		extends AbstractSecurityBuilder<O> {
+		
+		public <C extends SecurityConfigurer<O, B>> C apply(C configurer) throws Exception {
+		add(configurer);
+		return configurer;
+	}
+		
+		public abstract class UserDetailsAwareConfigurer<B extends ProviderManagerBuilder<B>, U extends UserDetailsService>
+		extends SecurityConfigurerAdapter<AuthenticationManager, B> {
+		
+		public abstract class UserDetailsAwareConfigurer<B extends ProviderManagerBuilder<B>, U extends UserDetailsService>
+		extends SecurityConfigurerAdapter<AuthenticationManager, B> {
+		
+		public interface SecurityConfigurer<O, B extends SecurityBuilder<O>> {
+		public abstract class SecurityConfigurerAdapter<O, B extends SecurityBuilder<O>> implements SecurityConfigurer<O, B> {
+        
+        public class DaoAuthenticationConfigurer<B extends ProviderManagerBuilder<B>, U extends UserDetailsService>
+		extends AbstractDaoAuthenticationConfigurer<B, DaoAuthenticationConfigurer<B, U>, U>
